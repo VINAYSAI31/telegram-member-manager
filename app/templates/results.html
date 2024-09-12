@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Analysis Results</title>
+    <style>
+        body {
+            background-color: #f4f7f9; /* Light blueish background */
+            color: #333;
+            font-family: 'Open Sans', sans-serif; /* Clean font */
+        }
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 2rem;
+            background-color: #ffffff;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h1 {
+            font-weight: 600;
+            color: #0044cc; /* Darker blue for title */
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .card {
+            border-radius: 8px;
+            border: none;
+            background-color: #e9f1fc; /* Light blue for card background */
+            margin-bottom: 1.5rem;
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        .card:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .card-title {
+            font-weight: 500;
+            color: #0044cc; /* Use blue for card title */
+            margin-bottom: 0.5rem;
+        }
+        .card-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #003399; /* Darker blue for card text */
+        }
+        .list-group-item {
+            background-color: #ffffff; /* White for list background */
+            border: 1px solid #cce0ff; /* Light blue border */
+            border-radius: 5px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        .btn-primary {
+            background-color: #0044cc; /* Deep blue button */
+            border-radius: 8px;
+            padding: 0.75rem 1.25rem;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary:hover {
+            background-color: #003399; /* Darker blue on hover */
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background-color: #336699; /* Secondary blue tone */
+            border-radius: 8px;
+            padding: 0.75rem 1.25rem;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .btn-secondary:hover {
+            background-color: #264d73; /* Darker blue hover */
+            transform: translateY(-2px);
+        }
+        .btn-group .btn {
+            margin: 0 10px;
+        }
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            .card-text {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Telegram Group Analysis </h1>
+
+        <div class="row">
+            <!-- Summary Cards -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Users (excluding bots)</h5>
+                        <p class="card-text">{{ result.total_users }}</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Correct Usernames</h5>
+                        <p class="card-text">{{ result.correct_usernames }}</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Incorrect Usernames</h5>
+                        <p class="card-text">{{ result.incorrect_usernames }}</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Bots</h5>
+                        <p class="card-text">{{ result.total_bots }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Analysis -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        Detailed Analysis
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Removed Users</h5>
+                        <ul class="list-group mb-3">
+                            {% for user in result.removed_users %}
+                                <li class="list-group-item">
+                                    {% if user.first_name %} {{ user.first_name }} {% endif %}
+                                    {% if user.last_name %} {{ user.last_name }} {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <!-- CSV Download Links -->
+                <div class="text-center mt-4">
+                    <div class="btn-group">
+                        <a href="{{ url_for('download_removed_users') }}" class="btn btn-primary">Removed Users CSV</a>
+                        <a href="{{ url_for('download_correct_usernames') }}" class="btn btn-primary">Correct Users CSV</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to Home Button -->
+        <div class="text-center mt-4">
+            <a href="{{ url_for('home') }}" class="btn btn-secondary">Back to Home</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

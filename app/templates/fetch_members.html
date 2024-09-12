@@ -1,0 +1,138 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>All Members</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f0f2f5;
+                color: #333;
+            }
+
+            h1 {
+                text-align: center;
+                margin-top: 30px;
+                font-size: 2rem;
+                color: #0056b3;
+            }
+
+            .container {
+                width: 90%;
+                max-width: 1200px;
+                margin: 40px auto;
+                background-color: #fff;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                padding: 20px 40px;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background-color: #fff;
+                margin-top: 20px;
+            }
+
+            thead {
+                background-color: #0056b3;
+                color: #fff;
+            }
+
+            th, td {
+                padding: 15px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+
+            th {
+                font-weight: bold;
+            }
+
+            tr:hover {
+                background-color: #f1f1f1;
+            }
+
+            /* Button Styles */
+            .button {
+                display: inline-block;
+                padding: 10px 20px;
+                margin-bottom: 20px;
+                background-color: #0056b3;
+                color: #fff;
+                text-decoration: none;
+                border-radius: 5px;
+                font-size: 1rem;
+                text-align: center;
+                position: relative;
+                right:992px;
+
+            }
+
+            .button:hover {
+                background-color: #004094;
+            }
+
+            .back-button {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                padding: 10px 20px;
+                background-color: #6c757d;
+                color: #fff;
+                text-decoration: none;
+                border-radius: 5px;
+                font-size: 0.9rem;
+            }
+
+            .back-button:hover {
+                background-color: #5a6268;
+            }
+
+            .download-btn-container {
+                text-align: right;
+            }
+
+            .summary {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .summary p {
+                margin: 5px 0;
+                font-size: 1.1rem;
+            }
+        </style>
+    </head>
+    <body>
+        <a href="/" class="back-button">← Back to Dashboard</a>
+
+        <div class="container">
+            <h1>All Members</h1>
+
+            <div class="download-btn-container">
+                <a href="{{ url_for('download_all_members') }}" class="button">Download All Members</a>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in members %}
+                    <tr>
+                        <td>{{ member.first_name if member.first_name else "No First Name" }}</td>
+                        <td>{{ member.last_name if member.last_name else "No Last Name" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </body>
+    </html>

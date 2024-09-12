@@ -1,0 +1,11 @@
+/all_members.csv
+/all_members_unique.csv
+/BotSession.session
+/correct_usernames.csv
+/correct_usernames_unique.csv
+/removed_users.csv
+/removed_users_unique.csv
+/TempBotSession.session
+/test_access.py
+/UniqueBotSession.session
+/UniqueTempBotSession.session

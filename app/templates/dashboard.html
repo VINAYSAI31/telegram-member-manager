@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Telegram Group Dashboard</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0056b3;
+            margin-bottom: 40px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+
+        .form-label {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-primary:hover {
+            background-color: #004494;
+            border-color: #004494;
+        }
+
+        .spinner-border {
+            display: none;
+            width: 3rem;
+            height: 3rem;
+            margin: 20px auto;
+        }
+
+        /* Button group alignment */
+        .form-actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
+            border-color: #0056b3;
+        }
+
+        hr {
+            border: 1px solid #ddd;
+            margin: 40px 0;
+        }
+    </style>
+    <script>
+        function showSpinner() {
+            document.getElementById('spinner').style.display = 'block';
+            document.getElementById('runBotButton').disabled = true;  // Disable the button to prevent multiple submissions
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Telegram Group Dashboard</h1>
+
+        <!-- Fetch All Members Form -->
+        <form action="/fetch_members" method="post" onsubmit="showSpinner()">
+            <div class="mb-3">
+                <label for="fetch_group_id" class="form-label">Enter Telegram Group ID to Fetch Members:</label>
+                <input type="text" class="form-control" id="fetch_group_id" name="group_id"  required>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="fetchMembersButton">Fetch All Members</button>
+            </div>
+        </form>
+
+        <hr>
+
+        <!-- Existing Form with Spinner -->
+        <form action="{{ url_for('dashboard') }}" method="POST" onsubmit="showSpinner()">
+            <div class="mb-3">
+                <label for="group_id" class="form-label">Enter Telegram Group ID:</label>
+                <input type="text" class="form-control" id="group_id" name="group_id" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_pattern" class="form-label">Enter ID Pattern:</label>
+                <input type="text" class="form-control" id="id_pattern" name="id_pattern" placeholder="e.g., 22" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="runBotButton">Run Bot</button>
+            </div>
+        </form>
+
+        
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
