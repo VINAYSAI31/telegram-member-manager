@@ -12,7 +12,7 @@ api_id = 'YourAPI_ID'
 
 api_hash = 'yourapi_hash'
 
-bot_token = '7372307064:AAGjWd2CyTwUn-06WePJq4wiuv5GJbwkHGk'
+bot_token = 'your bot token'
 
 # Create a global event loop
 loop = asyncio.get_event_loop()
