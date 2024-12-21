@@ -3,13 +3,19 @@ from app import app
 from app.telegram_bot import run_bot, fetch_all_members
 import asyncio
 import os
+from telethon.sync import TelegramClient  # Import TelegramClient
+
+
+# Global variable for the new project location
+PROJECT_DIR = "Your Project Directory"
+api_id = 'YourAPI_ID'
+
+api_hash = 'yourapi_hash'
+
+bot_token = '7372307064:AAGjWd2CyTwUn-06WePJq4wiuv5GJbwkHGk'
 
 # Create a global event loop
 loop = asyncio.get_event_loop()
-
-# Define a global variable for the base file path
-BASE_FILE_PATH = #your base file path
-
 print("Routes file loaded")
 
 
@@ -32,12 +38,12 @@ def dashboard():
             removed_users_csv = result.get('removed_users_csv')
             correct_usernames_csv = result.get('correct_usernames_csv')
 
-            if removed_users_csv and os.path.exists(os.path.join(BASE_FILE_PATH, removed_users_csv)):
+            if removed_users_csv and os.path.exists(os.path.join(PROJECT_DIR, removed_users_csv)):
                 print(f"Removed users CSV file created successfully: {removed_users_csv}")
             else:
                 print("Error: Removed users CSV file not found.")
 
-            if correct_usernames_csv and os.path.exists(os.path.join(BASE_FILE_PATH, correct_usernames_csv)):
+            if correct_usernames_csv and os.path.exists(os.path.join(PROJECT_DIR, correct_usernames_csv)):
                 print(f"Correct usernames CSV file created successfully: {correct_usernames_csv}")
             else:
                 print("Error: Correct usernames CSV file not found.")
@@ -75,7 +81,7 @@ def download_all_members():
     print(f"Fetch members result: {fetch_members_result}")
 
     if fetch_members_result and 'all_members_csv' in fetch_members_result:
-        file_path = os.path.join(BASE_FILE_PATH, fetch_members_result['all_members_csv'])
+        file_path = os.path.join(PROJECT_DIR, fetch_members_result['all_members_csv'])
         print(f"Attempting to send file from path: {file_path}")
 
         if os.path.exists(file_path):
@@ -98,7 +104,7 @@ def results():
 def download_removed_users():
     result = session.get('result')
     if result and 'removed_users_csv' in result:
-        file_path = os.path.join(BASE_FILE_PATH, result['removed_users_csv'])
+        file_path = os.path.join(PROJECT_DIR, result['removed_users_csv'])
         if os.path.exists(file_path):
             return send_file(file_path, as_attachment=True)
         else:
@@ -111,7 +117,7 @@ def download_removed_users():
 def download_correct_usernames():
     result = session.get('result')
     if result and 'correct_usernames_csv' in result:
-        file_path = os.path.join(BASE_FILE_PATH, result['correct_usernames_csv'])
+        file_path = os.path.join(PROJECT_DIR, result['correct_usernames_csv'])
         print(f"Attempting to send file from path: {file_path}")
         if os.path.exists(file_path):
             return send_file(file_path, as_attachment=True)
@@ -119,3 +125,12 @@ def download_correct_usernames():
             abort(404, description="File not found")
     else:
         abort(404, description="No file available for download")
+
+@app.route('/get_groups', methods=['GET'])
+async def get_groups():
+    async with TelegramClient('my_session', api_id, api_hash) as client:
+        # Fetch all group chats
+        groups = await client.get_dialogs()
+        group_ids = [{'id': dialog.id, 'title': dialog.name} for dialog in groups if dialog.is_group]
+
+    return jsonify(group_ids)

@@ -69,6 +69,33 @@
             document.getElementById('spinner').style.display = 'block';
             document.getElementById('runBotButton').disabled = true;  // Disable the button to prevent multiple submissions
         }
+
+        // Fetch group IDs when the page loads
+        window.onload = function() {
+            fetch('/get_groups')
+                .then(response => response.json())
+                .then(data => {
+                    const groupSelect = document.getElementById('group_id');
+                    const groupFetchSelect = document.getElementById('fetch_group_id');
+                    
+                    groupSelect.innerHTML = ''; // Clear initial options
+                    groupFetchSelect.innerHTML = ''; // Clear initial options
+
+                    // Loop through the groups and create options for both selects
+                    data.forEach(group => {
+                        const option = document.createElement('option');
+                        option.value = group.id;
+                        option.textContent = group.title;
+
+                        // Append options for both the group selection fields
+                        groupSelect.appendChild(option);
+                        groupFetchSelect.appendChild(option.cloneNode(true));  // Clone the option for the second select
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching groups:', error);
+                });
+        };
     </script>
 </head>
 <body>
@@ -78,8 +105,10 @@
         <!-- Fetch All Members Form -->
         <form action="/fetch_members" method="post" onsubmit="showSpinner()">
             <div class="mb-3">
-                <label for="fetch_group_id" class="form-label">Enter Telegram Group ID to Fetch Members:</label>
-                <input type="text" class="form-control" id="fetch_group_id" name="group_id"  required>
+                <label for="fetch_group_id" class="form-label">Select Telegram Group to Fetch Members:</label>
+                <select class="form-select" id="fetch_group_id" name="group_id" required>
+                    <option value="">Loading groups...</option>
+                </select>
             </div>
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary" id="fetchMembersButton">Fetch All Members</button>
@@ -88,11 +117,13 @@
 
         <hr>
 
-        <!-- Existing Form with Spinner -->
+        <!-- Existing Form with Group Selection and Spinner -->
         <form action="{{ url_for('dashboard') }}" method="POST" onsubmit="showSpinner()">
             <div class="mb-3">
-                <label for="group_id" class="form-label">Enter Telegram Group ID:</label>
-                <input type="text" class="form-control" id="group_id" name="group_id" required>
+                <label for="group_id" class="form-label">Select Telegram Group:</label>
+                <select class="form-select" id="group_id" name="group_id" required>
+                    <option value="">Loading groups...</option>
+                </select>
             </div>
             <div class="mb-3">
                 <label for="id_pattern" class="form-label">Enter ID Pattern:</label>
@@ -103,7 +134,7 @@
             </div>
         </form>
 
-        
+    </div>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>

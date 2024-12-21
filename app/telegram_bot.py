@@ -4,17 +4,19 @@ from telethon import TelegramClient
 import pandas as pd
 import re
 from telethon.tl.types import User
+from telethon.sessions import MemorySession
+
 
 # Apply the patch to allow nested event loops
 nest_asyncio.apply()
 
 # Hardcoded values for API credentials
-api_id = #YOUR API ID
+api_id = YourAPI_ID
 
-api_hash = #YOUR API hash
+api_hash = 'your_api_hash'
 
-bot_token = #YOUR bot token
-client = TelegramClient('#sessionname', api_id, api_hash)
+bot_token = '7372307064:AAGjWd2CyTwUn-06WePJq4wiuv5GJbwkHGk'
+client = TelegramClient('my_session', api_id, api_hash)
 
 async def fetch_all_members(group_id):
     # Ensure group_id is an integer
@@ -37,7 +39,6 @@ async def fetch_all_members(group_id):
                 members.append({
                     'first_name': member.first_name,
                     'last_name': member.last_name,
-                    'id': member.id,
                 })
         
         # Convert to DataFrame
@@ -47,7 +48,7 @@ async def fetch_all_members(group_id):
         if df.empty:
             print("No members found.")
         
-        # Save to CSV
+        # Save to CSV (without member 'id')
         all_members_csv = 'all_members.csv'
         df.to_csv(all_members_csv, index=False)
         
@@ -60,6 +61,7 @@ async def fetch_all_members(group_id):
         }
         
         return result
+
 
     except Exception as e:
         print(f"Error fetching members: {e}")
