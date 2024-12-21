@@ -15,7 +15,7 @@ api_id = YourAPI_ID
 
 api_hash = 'your_api_hash'
 
-bot_token = '7372307064:AAGjWd2CyTwUn-06WePJq4wiuv5GJbwkHGk'
+bot_token = 'Your bot token'
 client = TelegramClient('my_session', api_id, api_hash)
 
 async def fetch_all_members(group_id):
